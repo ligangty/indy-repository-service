@@ -354,7 +354,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.plugin.compiler}</version>
         <configuration>
           <forceJavacCompilerUse>true</forceJavacCompilerUse>
         </configuration>
@@ -362,6 +361,43 @@
       <plugin>
         <groupId>io.quarkus.platform</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cassandra-maven-plugin</artifactId>
+        <version>3.7</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>start</goal>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <version>4.0.4</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <skip>${skipTests}</skip>
+          <startNativeTransport>true</startNativeTransport>
+          <cqlVersion>3.4.4</cqlVersion>
+          <maxMemory>2048</maxMemory>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>ru.concerteza.buildnumber</groupId>
