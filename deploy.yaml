@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: indy-repository-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: indy-repository-service
+  template:
+    metadata:
+      labels:
+        app: indy-repository-service
+    spec:
+      containers:
+        - name: indy-repository-service
+          image: indy-repository-service-test:latest
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          resources:
+            requests:
+              memory: "1000Mi"
+              cpu: "1"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: indy-repository-service-svc
+spec:
+  ports:
+    - name: http-8081
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: indy-repository-service
